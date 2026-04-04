@@ -2,8 +2,9 @@
 # --- Metadatos Básicos ---
 title: "Título del Trabajo Final"
 author:
-   - Mariangel Morales
-   - Camila 
+   - Primer participante
+   - Segundo participante
+   - Tercer participante
 date: "Febrero 2026"
 
 # --- Metadatos Específicos de Plantilla ---
@@ -87,18 +88,11 @@ IQR_val <- Q3 - Q1
 limite_inferior <- Q1 - 1.5 * IQR_val
 limite_superior <- Q3 + 1.5 * IQR_val
 
-# 4. FILTRADO FINAL
-df_sin_atipicos <- df_limpio %>%
-  filter(actual_price >= limite_inferior & actual_price <= limite_superior)
-
-# 5. VERIFICACIÓN
-nrow(df_sin_atipicos)
-summary(df_sin_atipicos$actual_price)
-
+```
 
 \chapter*{Introducción}
 
-Introducción del trabajo de investigación
+Amazon es una multinacional tecnológica estadounidense que ha evolucionado rápidamente desde su creación en 1994. A pesar de su éxito comercial, su amplitud y variedad en el mercado presenta dificultades para los vendedores y compradores. Esta investigación pretende aclarar las dudas relacionadas a los precios, porcentajes de descuento y diferencias de estos entre categorías
 
 \chapter{Planteamiento del Problema}
 Describir planteamiento del problema\
@@ -115,7 +109,7 @@ Argumento final. Debido a esto, se plantea las siguientes preguntas de investiga
 
 \section{Justificación}
 
-Justificación del trabajo de investigación\
+La presente investigación se justifica por su relevancia práctica y académica. Por la parte práctica, los resultados les van a permitir a los compradores, reconocer ofertas reales y engañosas, y a los vendedores de amazon identificar patrones de descuento y así poder ajustar sus estrategias de precios; y por la parte, de forma académica se aporta una metodología replicable para el análisis de datos de comercio electrónico utilizando python para el dashboard y R para el informe técnico.\
 
 \section{Objetivos}
  
