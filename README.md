@@ -10,7 +10,8 @@ En relación con lo expuesto anteriormente, la ausencia de un análisis que rela
 #### Objetivos generales 
 Describir la estructura del inventario de Amazon y analizar su estrategia de precios según las diferentes categorias de productos, identificando las brechas de precios entre productos similares.
 #### Objetivos específicos
-* 1. Analizar las diferencias entre productos similares, y la relación de precios entre el precio original y su porcentaje descuento en categorías con precios más altos.
-* 2. Identificar el número de productos existentes en cada categoría para determinar si el catálogo está distribuido equilibradamente o está concentrado en pocas categorías dominantes.
-* 3. Evaluar  la variabilidad de precios dentro de cada categoría para determinar si existen diferencias significativas entre productos de distintos rangos o si hay homogeneidad.
+1. Analizar las diferencias entre productos similares, y la relación de precios entre el precio original y su porcentaje descuento en categorías con precios más altos.
+2. Identificar el número de productos existentes en cada categoría para determinar si el catálogo está distribuido equilibradamente o está concentrado en pocas categorías dominantes.
+3. Evaluar  la variabilidad de precios dentro de cada categoría para determinar si existen diferencias significativas entre productos de distintos rangos o si hay homogeneidad.
 
+link del dashboard: https://amazon-sales.onrender.com/
