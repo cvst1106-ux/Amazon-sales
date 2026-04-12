@@ -1,0 +1,333 @@
+% --- INICIO DE PLANTILLA PERSONALIZADA ---
+\documentclass[oneside,11pt]{Latex/Classes/PhDthesisPSnPDF}
+
+% --- Paquetes Originales ---
+\usepackage{blindtext}
+\usepackage{actuarialangle} 
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{multirow, array}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{longtable}
+\usepackage{latexsym,amsmath,amssymb,amsfonts}
+\usepackage{enumitem}
+\usepackage{xparse}
+\usepackage{booktabs}
+\usepackage[round, sort, numbers]{natbib}  
+\usepackage{adjustbox}
+\usepackage[utf8]{inputenc}
+\usepackage{caption}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{cleveref}
+
+% Definición de colores
+\definecolor{miblue}{RGB}{68, 114, 196}
+
+% --- CAMBIO CRÍTICO 1: Usar \input para macros en el preámbulo ---
+% \include da problemas antes del begin document. \input es seguro.
+\input{Latex/Macros/MacroFile1}
+
+% --- Definiciones de seguridad (por si la clase falla al cargar alguna variable) ---
+\providecommand{\facultad}[1]{\def\lafacultad{#1}}
+\providecommand{\escudofacultad}[1]{\def\elescudo{#1}}
+\providecommand{\degree}[1]{\def\elgrado{#1}}
+\providecommand{\director}[1]{\def\eldirector{#1}}
+\providecommand{\lugar}[1]{\def\ellugar{#1}}
+\providecommand{\degreedate}[1]{\def\lafecha{#1}}
+
+% --- Configuración para bloques de código de R (Pandoc) ---
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                         DATOS (Conectados a RMarkdown)                       %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Título del Trabajo Final}
+\author{Mariangel Morales \\ Camila Santiago}
+
+% Lógica para Facultad: Si la defines en el YAML la usa, si no, usa la default
+
+\facultad{Facultad de Ciencias Económicas y Sociales \\ Escuela de
+Estadistica y Ciencias Actuariales}
+  \escudofacultad{Latex/Classes/Escudos/faces}
+
+\degree{Computación I}
+\director{Jesus Ochoa \\ Oliver Triveño}
+\degreedate{Abril 17 del 2026} 
+\lugar{Caracas}
+
+\portadatrue 
+
+% Metadatos PDF
+\keywords{}
+\subject{}
+
+% --- CORRECCIÓN PARA PANDOC NUEVO (Imágenes) ---
+\makeatletter
+\providecommand{\pandocbounded}[1]{#1}
+\makeatother
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                   DOCUMENTO                       %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                  PRÓLOGO                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frontmatter
+
+% Puedes agregar dedicatorias desde el YAML si quieres, o dejarlas fijas aquí
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                   ÍNDICES                         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\tableofcontents
+
+
+
+\cleardoublepage
+
+  \cleardoublepage       % Empieza en página derecha (estándar en tesis)
+  \chapter*{Resumen}     % Crea el título "Resumen" sin numeración (Capítulo *)
+  \addcontentsline{toc}{chapter}{Resumen} % (Opcional) Lo añade al índice
+  
+  Resumen del trabajo de
+investigación\ldots{}             % Aquí se pega el texto que escribiste en el YAML
+  
+  \cleardoublepage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                   CONTENIDO (El Corazón)          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mainmatter
+\def\baselinestretch{1.5}
+
+% --- CAMBIO CRÍTICO 2: Aquí RMarkdown inyecta todo tu texto ---
+\chapter*{Introducción}
+
+Amazon es una multinacional tecnológica estadounidense que ha
+evolucionado rápidamente desde su creación en 1994. A pesar de su éxito
+comercial, su amplitud y variedad en el mercado presenta dificultades
+para los vendedores y compradores. Esta investigación pretende aclarar
+las dudas relacionadas a los precios, porcentajes de descuento y
+diferencias de estos entre categorías
+
+\chapter{Planteamiento del Problema}
+
+Amazon es una multinacional tecnológica estadounidense, fundada por Jeff
+Bezos en 1994, posteriormente, en 1995 se convierte en uno de los
+primeros grandes minoristas en línea cuando empieza a vender libros de
+forma online, y en 1996 se expande a la música, el vídeo y otros
+productos, lanzando su primer sitio web no inglés en Canadá. Durante los
+2000 se expande a nuevas categorías de productos, como juguetes y
+electrónica, y lanza su sitio web en otros idiomas. Amazon sigue
+creciendo y lanza su programa de afiliación Prime, que ofrece envíos
+gratuitos ilimitados en dos días para millones de productos, además de
+otras ventajas exclusivas (2003), así como también, lanza Kindle
+e-lector y abrir una tienda física en Seattle (2006); su expansión
+continúa con servicios en la nube, más variedad de productos, sucursales
+en todo el mundo y Amazon music (2011).\\
+A pesar de su éxito comercial, su amplitud y variedad en el mercado
+presenta dificultades para los vendedores, entre ellas, se señala que
+Amazon tiende a priorizar sus propios productos frente a los de
+terceros, además del elevado número de negocios que ofrecen otros
+productos muy similares en la plataforma. Tanto los vendedores
+independientes como sus competidores comercializan en el mismo
+escaparate, sin margen de conveniencia para ninguna de las partes. La
+principal virtud de la era digital son los datos. Para las empresas esta
+es una valiosa información, pero Amazon no comparte estos datos con los
+vendedores que distribuyen a través de su plataforma. Los vendedores se
+encargan de llevar a cabo la transacción de los pedidos, pero no pueden
+acceder a los clientes individualmente. Esto dificulta cualquier intento
+de fidelización con sus consumidores; así, Amazon posee el monopolio de
+los datos, y de las campañas promocionales. Un ejemplo desfavorable de
+esto para los vendedores es la semana del Black Friday, durante las
+ofertas vigentes, los distribuidores de forma obligatoria tienen que
+ajustar sus ofertas y sus precios a lo establecido por la plataforma. En
+este marketplace se paga un porcentaje por cada venta que se realice a
+través de la plataforma, las comisiones de Amazon se encuentran entre el
+7\% y el 15\% de la venta dependiendo del sector al que pertenezca el
+artículo. Además, deben pagar al mes o por venta el plan elegido. Por
+esta razón las marcas o negocios que venden productos que tienen un bajo
+precio necesitan ampliar su catálogo o vender productos de mayor valor
+para que les sea rentable vender en el marketplace.\\
+
+En este sentido, se plantean las siguientes interrogantes:\\
+
+\textbf{1.} ¿Existen categorías donde los descuentos son más altos que
+el resto del catálogo y, si éstas existen, hay alguna relación entre el
+precio original y su porcentaje de descuento?\\
+
+\textbf{2.} ¿La distribución de los productos está equilibrada entre
+categorías o, el catálogo es predominante y más voluminoso en otras
+categorías?\\
+
+\textbf{3.} ¿Dentro de las categorías, conviven productos de distintos
+rangos de precios o existe una homogeneidad entre ellos?\\
+
+\section{Justificación}
+
+La presente investigación se justifica por su relevancia práctica y
+académica. Por la parte práctica, los resultados les van a permitir a
+los compradores, reconocer ofertas reales y engañosas, y a los
+vendedores de amazon identificar patrones de descuento y así poder
+ajustar sus estrategias de precios; y por la parte, de forma académica
+se aporta una metodología replicable para el análisis de datos de
+comercio electrónico utilizando python para el dashboard y R para el
+informe técnico.\\
+
+\section{Objetivos}
+
+\subsection{Objetivo General}
+\begin{itemize}
+  \item{Describir la estructura del inventario de Amazon y analizar su estrategia de precios según sus diferentes categorías e identificar las brechas de precios y descuentos entre productos similares.}
+\end{itemize}
+
+\subsection{Objetivos Específicos}
+\begin{itemize}
+  \item{Analizar las diferencias entre productos similares, y la relación de precios entre el precio original y su porcentaje descuento en categorías con precios más altos.}
+  \item{Identificar el número de productos existentes en cada categoría para determinar si el catálogo está distribuido equilibradamente o está concentrado en pocas categorías dominantes.}
+  \item{Evaluar  la variabilidad de precios dentro de cada categoría para determinar si existen diferencias significativas entre productos de distintos rangos o si hay homogeneidad.}
+\end{itemize}
+
+\section{Cobertura}
+
+\subsection{Horizontal}
+
+Describir la cobertura Horizontal del trabajo de investigación\\
+
+\begin{table}[ht]
+\centering
+\caption{Variables consideradas} 
+\resizebox{10cm}{!} {
+\begin{tabular}{ccc}
+  \hline
+\ \ \ \ \ NOMBRE DE LA VARIABLE \\ 
+  \hline
+   VARIABLE 1 \\ 
+VARIABLE 2\\ 
+VARIABLE n\\ 
+   \hline
+\end{tabular}
+}
+\end{table}
+
+\subsection{Vertical}
+
+Describir la cobertura Vertical del trabajo de investigación
+
+\section{Periodo de Referencia}
+
+Describir la fuente y el Periodo de Referencia utilizado en el trabajo
+de investigación
+
+\section{Variables}
+
+Describir la variable en estudio en el trabajo de investigación
+
+\chapter{Marco Teórico}
+
+\section{Bases Teóricas}
+
+Resumen de las bases teoricas explicadas en el capitulo y su
+importancia\\
+
+\subsection{Definición 1}
+
+Descripción de la definición 1\\
+
+\subsection{Definición 2}
+
+Descripción de la definición 2\\
+
+\subsection{Definición n}
+
+Descripción de la definición n\\
+
+\chapter{Marco Metódico}
+
+En esta sección se presentan las metodologías y/o test necesarios
+relacionados con la práctica divulgada en el marco teórico, así como las
+fuentes de datos.
+
+\section{Bases metódicas utilizadas en el trabajo de investigación}
+
+Desarrollo\\
+
+\subsection{Item 1}
+
+Descripción\\
+
+\subsection{Item 2}
+
+Descripción\\
+
+\subsubsection{Item 2.2}
+
+Descripción\\
+
+\subsection{Item n}
+
+Descripción\\
+
+\chapter{Análisis de Resultados}
+
+\{\small Este capítulo presenta los resultados obtenidos al aplicar las
+metodologías descritas en el capítulo anterior, así como del análisis
+estadístico descriptivo de las variables estudiadas y las ventajas y
+desventajas al aplicar dichos tests.\}
+
+\section{Presentación de resultados 1}
+
+Descripción\\
+
+\section{Presentación de resultados 2}
+
+Descripción\\
+
+\section{Presentación de resultados n}
+
+Descripción\\
+
+\chapter{Conclusiones y Recomendaciones}
+
+\textbf{1.-} Conclusion 1 del trabajo de investigación.\\
+
+\textbf{Recomendación} Recomendación 1 del trabajo de investigación.\\
+
+\textbf{2.-} Conclusion 2 del trabajo de investigación.\\
+
+\textbf{Recomendación} Recomendación 2 del trabajo de investigación.\\
+
+\textbf{n.-} Conclusion n del trabajo de investigación.\\
+
+\textbf{Recomendación} Recomendación n del trabajo de investigación.\\
+
+\appendix
+\renewcommand{\thechapter}{\Alph{chapter}}
+
+\chapter{Anexo A}
+
+\chapter{Anexo B}
+
+\chapter{Anexo C}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                   REFERENCIAS                     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mantenemos la estructura natbib de tu plantilla
+\renewcommand{\bibname}{Lista de Referencias}
+\bibliographystyle{apalike} 
+\bibliography{bibliografia.bib} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                   APÉNDICES                       %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
