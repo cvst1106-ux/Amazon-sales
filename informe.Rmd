@@ -211,7 +211,7 @@ A través de la estadística descriptiva, se examinarán los datos para responde
 
 
 ```{r}
-# Estadísticas completas, modificar el grafico y hacer
+#Este es para dividir las categorias y sacar la "principal"
 
 library(tidyverse)
 library(knitr)
@@ -237,34 +237,13 @@ Categorias <- df_limpio %>%
   mutate(categoria_principal = str_split(category, "\\|") %>% 
            sapply(function(x) x[1]))  
 
-#este es para dividir las categorias
-
-
-```
-
-
-
-```{r}
-resumen_categoria <- df_limpio %>%
-  group_by(category) %>%
-  summarise(
-    "N° Productos" = n(),
-    "Mínimo" = min(actual_price),
-    "Percentil 25" = quantile(actual_price, 0.25),
-    "Mediana" = median(actual_price),
-    "Percentil 75" = quantile(actual_price, 0.75),
-    "Máximo" = max(actual_price),
-    "Media" = mean(actual_price),
-    "Desviación" = sd(actual_price),
-    "Descuento %" = mean(discount_percentage)
-  )
-
 resumen_categoria <- resumen_categoria %>%
   mutate(Desviación = ifelse(is.na(Desviación), 0, Desviación))
 
 
-
 ```
+
+
 
 
 \subsection{Item 1}
@@ -275,19 +254,88 @@ Descripción\
 
 \chapter{Análisis de Resultados}
 
-{\small Este capítulo presenta los resultados obtenidos al aplicar las metodologías descritas en el capítulo anterior, se exponen las respuestas a las preguntas planteadas y los resultados de los objetos específicos, por medio de visualizaciones (creación de gráficos) que ayudan a mostrar las distribuciones y relaciones de una forma mas interactiva.}
+\small Este capítulo presenta los resultados obtenidos al aplicar las metodologías descritas en el capítulo anterior, se exponen las respuestas a las preguntas planteadas y los resultados de los objetos específicos, por medio de visualizaciones (creación de gráficos) que ayudan a mostrar las distribuciones y relaciones de una forma mas interactiva.
 
-\section{Presentación de resultados 1}
+\section {¿Existen categorías donde los descuentos son más altos que el resto del catálogo y, si éstas existen, hay alguna relación entre el precio original y su porcentaje de descuento?}
 
-¿Existen categorías donde los descuentos son más altos que el resto del catálogo y, si éstas existen, hay alguna relación entre el precio original y su porcentaje de descuento?\
+respuesta\
 
-\section{Presentación de resultados 2}
+```{r}
+library(ggplot2)
+
+# Se hace un cuadro de dispersión y de barras entre categorias y porcentajes de descuento, también uno de correlacion entre el precio original y el % de descuento 
+
+Categorias %>%
+  group_by(categoria_principal) %>%
+  summarise(max_descuento = max(discount_percentage, na.rm = TRUE)) %>%
+  ggplot(aes(x = reorder(categoria_principal, -max_descuento), y = max_descuento)) +
+  geom_col(fill = "steelblue") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(
+    title = "Máximo Porcentaje de Descuento por Categoría",
+    x = "Categorías",
+    y = "Porcentaje Máximo (%)"
+  )
+ggplot(data = Categorias, 
+       aes(x = categoria_principal, 
+           y = discount_percentage,
+           color = categoria_principal)) +
+  geom_point(size = 3) +
+theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+ labs(
+    title = "Máximo Porcentaje de Descuento por Categoría",
+    x = "Categorías",
+    y = "Porcentaje Máximo (%)"
+  )
+
+```
+
+
+
+```{r}
+
+# Se hace un cuadro de dispersión entre categorias y porcentajes de descuento, también uno de correlacion entre el precio original y el % de descuento 
+
+
+
+```
+
+
+\section{¿La distribución de los productos está equilibrada entre categorías o, el catálogo es predominante y más voluminoso en otras categorías?}
+
+Respuesta\
+
+```{r}
+library(ggplot2)
+
+Categorias%>%
+  count(categoria_principal, sort = TRUE)%>%
+  ggplot(aes(x = reorder(categoria_principal, n), y = n)) +
+  geom_col(fill = "orange") +    
+  coord_flip() +                    
+  labs(
+    title = "Número de Productos por Categoría",
+    x = "Volumen de la categoria",
+    y = "Categorias"
+  )
+```
+
+
+\section{¿Dentro de las categorías, conviven productos de distintos rangos de precios o existe una homogeneidad entre ellos?}
 
 Descripción\
 
-\section{Presentación de resultados n}
+```{r}
 
-Descripción\
+Diferencias_precios <- Categorias %>%
+  group_by(categoria_principal) %>%
+  summarise(
+    "Mínimo" = min(actual_price),
+    "Máximo" = max(actual_price),
+  )
+
+```
+
 
 \chapter{Conclusiones y Recomendaciones}
 

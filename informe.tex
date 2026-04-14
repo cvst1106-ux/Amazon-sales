@@ -196,49 +196,6 @@ informe técnico.\\
   \item{Evaluar  la variabilidad de precios dentro de cada categoría para determinar si existen diferencias significativas entre productos de distintos rangos o si hay homogeneidad.}
 \end{itemize}
 
-\section{Cobertura}
-
-\subsection{Horizontal}
-
-la cobertura horizontal abarca las variable que identifican cada
-producto (Id del producto), el nombre asignado del objeto que se está
-vendiendo (nombre del producto), clasificación del producto (categoría),
-costo del producto después de aplicar la rebaja (precio con descuento),
-costo del producto sin ningún descuento (precio actual) y el porcentaje
-de rebaja aplicado (porcentaje de descuento).
-
-\hfill\break
-
-\begin{table}[ht]
-\centering
-\caption{Variables consideradas} 
-\resizebox{10cm}{!} {
-\begin{tabular}{ccc}
-  \hline
-\ \ \ \ \ Id del producto \\ 
-  \hline
-   Nombre del producto \\ 
-Categoría\\ 
-Precio con descuento\\
-Precio actual\\
-Porcentaje de descuento\\
-   \hline
-\end{tabular}
-}
-\end{table}
-
-\subsection{Vertical}
-
-La cobertura vertical está comprendida por 1465 registros, que
-corresponden a productos comercializados en Amazon, cada fila representa
-un producto con un ID único con sus características, precio, porcentaje
-de descuento y precio con el descuento.
-
-\section{Periodo de Referencia}
-
-Describir la fuente y el Periodo de Referencia utilizado en el trabajo
-de investigación
-
 \section{Variables}
 
 Describir la variable en estudio en el trabajo de investigación
@@ -257,6 +214,11 @@ razonamiento del lector, las siguientes definiciones son:\\
 
 Los catálogos son contenedores de elementos que están relacionados entre
 sí a través de un contexto de negocio\\
+
+\subsection{Rupias}
+
+Es la moneda oficial de la India ``\,``, también está vinculada a otras
+monedas, como el ngultrum butanés y la rupia nepalí.\\
 
 \subsection{Estrategia de precios }
 
@@ -316,46 +278,58 @@ acción de comprar.\\
 
 \chapter{Marco Metódico}
 
-En esta sección se presentan las metodologías y/o test necesarios
-relacionados con la práctica divulgada en el marco teórico, así como las
-fuentes de datos.
+En este capítulo se presentan los fundamentos estadísticos empleados que
+hicieron posible analizar la base de datos, la cual fue obtenida de
+Kaggle y se titula ``Amazon Sales'', contiene una parte del catálogo de
+Amazon India; la misma, se conforma de 16 columnas y 1465 filas, se le
+realizó una limpieza de columnas, dejando así solo 6 que serían las
+variables clave para este análisis. Esta investigación adopta un enfoque
+cuantitativo, de tipo descriptivo-correlacional.
 
 \section{Bases metódicas utilizadas en el trabajo de investigación}
 
-Desarrollo\\
+A través de la estadística descriptiva, se examinarán los datos para
+responder las preguntas de investigación planteadas. Se utilizará la
+media aritmética en este trabajo para saber el precio promedio por
+categoría para el análisis de la estructura de precios del catálogo,
+está se va a comparar con la mediana, para reconocer si hay productos
+que afecten significativamente al promedio; también, se usarán medidas
+como, el rango (podemos saber que tan amplia es la diferencia de
+precios), rango intercuartílico (mide la dispersión del 50\% central de
+los datos y se utiliza para identificar valores atípicos), desviación
+típica (indica la dispersión de los datos, si es mayor, significa que
+están más dispersos los datos), varianza (permite comparar la
+variabilidad entre categorías con precios muy diferentes) y correlación
+(si dos variables se relacionan de forma lineal o inversa).\\
 
 \subsection{Item 1}
 
 Descripción\\
 
-\subsection{Item 2}
-
-Descripción\\
-
-\subsubsection{Item 2.2}
-
-Descripción\\
-
-\subsection{Item n}
-
-Descripción\\
-
 \chapter{Análisis de Resultados}
 
-\{\small Este capítulo presenta los resultados obtenidos al aplicar las
-metodologías descritas en el capítulo anterior, así como del análisis
-estadístico descriptivo de las variables estudiadas y las ventajas y
-desventajas al aplicar dichos tests.\}
+\small Este capítulo presenta los resultados obtenidos al aplicar las
+metodologías descritas en el capítulo anterior, se exponen las
+respuestas a las preguntas planteadas y los resultados de los objetos
+específicos, por medio de visualizaciones (creación de gráficos) que
+ayudan a mostrar las distribuciones y relaciones de una forma mas
+interactiva.
 
-\section{Presentación de resultados 1}
+\section {¿Existen categorías donde los descuentos son más altos que el resto del catálogo y, si éstas existen, hay alguna relación entre el precio original y su porcentaje de descuento?}
 
-Descripción\\
+respuesta\\
 
-\section{Presentación de resultados 2}
+\begin{center}\includegraphics[width=0.9\linewidth,]{informe_files/figure-latex/unnamed-chunk-2-1} \end{center}
 
-Descripción\\
+\begin{center}\includegraphics[width=0.9\linewidth,]{informe_files/figure-latex/unnamed-chunk-2-2} \end{center}
 
-\section{Presentación de resultados n}
+\section{¿La distribución de los productos está equilibrada entre categorías o, el catálogo es predominante y más voluminoso en otras categorías?}
+
+Respuesta\\
+
+\begin{center}\includegraphics[width=0.9\linewidth,]{informe_files/figure-latex/unnamed-chunk-4-1} \end{center}
+
+\section{¿Dentro de las categorías, conviven productos de distintos rangos de precios o existe una homogeneidad entre ellos?}
 
 Descripción\\
 
