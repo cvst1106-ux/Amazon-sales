@@ -48,45 +48,50 @@ knitr::opts_chunk$set(
   out.extra = ""
 )
 
-# Cargar librerías necesarias
+# Carga de librerías
 library(tidyverse)
 library(knitr)
 library(kableExtra)
 library(scales)
 library(janitor)
 
-# 1. Carga de data
+# Carga de data
 df <- read.csv("11. Amazon Sales.csv", encoding = "UTF-8")
 
-# 1. Limpieza y selección
+# Limpieza y selección de variables
 df_limpio <- df %>%
   janitor::clean_names() %>%
   select(product_id, product_name, category, actual_price, discount_percentage, discounted_price) %>%
   mutate(
-    # Limpiamos los precios con rupias
+
+# Limpieza de precios
     actual_price = as.numeric(gsub("[^0-9.]", "", actual_price)),
     discounted_price = as.numeric(gsub("[^0-9.]", "", discounted_price )),
-    # Limpiamos los porcentaje
+   
+ # Limpieza de porcentajes
     discount_percentage = as.numeric(gsub("[^0-9.]", "", discount_percentage)) / 100
   )
 
-# 2. Recalculo de %
+# Recalculo de porcentaje
+
 df_limpio <- df_limpio %>%
   mutate(
     discounted_price = actual_price - (actual_price * discount_percentage),
     discounted_price = round(discounted_price, 0)
   )
+df_limpio <- df_limpio %>%
+  mutate(discount_percentage = round(discount_percentage * 100, 0))
 
-# 3. Verificación
-head(df_limpio)
-
-# 3. CÁLCULO DE OUTLIERS
+#Cálculo de outliers 
 Q1 <- quantile(df_limpio$actual_price, 0.25, na.rm = TRUE)
 Q3 <- quantile(df_limpio$actual_price, 0.75, na.rm = TRUE)
 IQR_val <- Q3 - Q1
 
 limite_inferior <- Q1 - 1.5 * IQR_val
 limite_superior <- Q3 + 1.5 * IQR_val
+
+is.na.data.frame("Amazon SAles.11.csv")
+
 
 ```
 
@@ -133,41 +138,6 @@ La presente investigación se justifica por su relevancia práctica y académica
 \end{itemize}
 
 
-\section{Cobertura}
-
-\subsection{Horizontal}
-
-la cobertura horizontal abarca las variable que identifican cada producto (Id del producto), el nombre asignado del objeto que se está vendiendo (nombre del producto), clasificación del producto (categoría), costo del producto después de aplicar la rebaja (precio con descuento), costo del producto sin ningún descuento (precio actual) y el porcentaje de rebaja aplicado (porcentaje de descuento). 
-
-\
-
-\begin{table}[ht]
-\centering
-\caption{Variables consideradas} 
-\resizebox{10cm}{!} {
-\begin{tabular}{ccc}
-  \hline
-\ \ \ \ \ Id del producto \\ 
-  \hline
-   Nombre del producto \\ 
-Categoría\\ 
-Precio con descuento\\
-Precio actual\\
-Porcentaje de descuento\\
-   \hline
-\end{tabular}
-}
-\end{table}
-
-\subsection{Vertical}
-
-La cobertura vertical está comprendida por 1465  registros, que corresponden a productos comercializados en Amazon, cada fila representa un producto con un ID único con sus características, precio, porcentaje de descuento y precio con el descuento.
-
-
-\section{Periodo de Referencia}
-
-Describir la fuente y el Periodo de Referencia utilizado en el trabajo de investigación
-
 \section{Variables}
 
 Describir la variable en estudio en el trabajo de investigación
@@ -182,6 +152,11 @@ Las bases teóricas que se usarán en este trabajo para sustentar el análisis e
 \subsection{Catálogo}
 
 Los catálogos son contenedores de elementos que están relacionados entre sí a través de un contexto de negocio \
+
+\subsection{Rupias}
+
+Es la moneda oficial de la India "", también está vinculada a otras monedas, como el ngultrum butanés y la rupia nepalí. \
+
 
 \subsection{Estrategia de precios }
 
@@ -226,35 +201,85 @@ Suministran materias primas o componentes utilizados en la producción. \
 Es la persona que realiza la transacción de compra, el término comprador suele tener un matiz transaccional, ya que se refiere únicamente a la acción de comprar. \
 
 \chapter{Marco Metódico}
-En esta sección se presentan las metodologías y/o test necesarios relacionados con la práctica divulgada en el marco teórico, así como las fuentes de datos.
+En este capítulo se presentan los fundamentos estadísticos empleados que hicieron posible analizar la base de datos, la cual fue obtenida de Kaggle y se titula "Amazon Sales", contiene una parte del catálogo de Amazon India; la misma, se conforma de 16 columnas y 1465 filas, se le realizó una limpieza de columnas, dejando así solo 6 que serían las variables clave para este análisis. Esta investigación adopta un enfoque cuantitativo, de tipo descriptivo-correlacional.
+ 
  
 \section{Bases metódicas utilizadas en el trabajo de investigación}
 
-Desarrollo\
+A través de la estadística descriptiva, se examinarán los datos para responder las preguntas de investigación planteadas. Se utilizará la media aritmética en este trabajo para saber el precio promedio por categoría para el análisis de la estructura de precios del catálogo, está se va a comparar con la mediana, para reconocer si hay productos que afecten significativamente al promedio; también, se usarán medidas como, el rango (podemos saber que tan amplia es la diferencia de precios), rango intercuartílico (mide la dispersión del 50% central de los datos y se utiliza para identificar valores atípicos), desviación típica (indica la dispersión de los datos, si es mayor, significa que están más dispersos los datos), varianza (permite comparar la variabilidad entre categorías con precios muy diferentes) y correlación (si dos variables se relacionan de forma lineal o inversa).\
+
+
+
+```{r}
+# Estadísticas completas, modificar el grafico y hacer
+
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(scales)
+library(janitor)
+
+resumen_categoria <- df_limpio %>%
+  group_by(category) %>%
+  summarise(
+    "N° Productos" = n(),
+    "Mínimo" = min(actual_price),
+    "Percentil 25" = quantile(actual_price, 0.25),
+    "Mediana" = median(actual_price),
+    "Percentil 75" = quantile(actual_price, 0.75),
+    "Máximo" = max(actual_price),
+    "Media" = mean(actual_price),
+    "Desviación" = sd(actual_price),
+    "Descuento %" = mean(discount_percentage)
+  )
+
+Categorias <- df_limpio %>%
+  mutate(categoria_principal = str_split(category, "\\|") %>% 
+           sapply(function(x) x[1]))  
+
+#este es para dividir las categorias
+
+
+```
+
+
+
+```{r}
+resumen_categoria <- df_limpio %>%
+  group_by(category) %>%
+  summarise(
+    "N° Productos" = n(),
+    "Mínimo" = min(actual_price),
+    "Percentil 25" = quantile(actual_price, 0.25),
+    "Mediana" = median(actual_price),
+    "Percentil 75" = quantile(actual_price, 0.75),
+    "Máximo" = max(actual_price),
+    "Media" = mean(actual_price),
+    "Desviación" = sd(actual_price),
+    "Descuento %" = mean(discount_percentage)
+  )
+
+resumen_categoria <- resumen_categoria %>%
+  mutate(Desviación = ifelse(is.na(Desviación), 0, Desviación))
+
+
+
+```
+
 
 \subsection{Item 1}
 
 Descripción\
 
-\subsection{Item 2}
 
-Descripción\
-
-\subsubsection{Item 2.2}
-
-Descripción\
-
-\subsection{Item n}
-
-Descripción\
 
 \chapter{Análisis de Resultados}
 
-{\small Este capítulo presenta los resultados obtenidos al aplicar las metodologías descritas en el capítulo anterior, así como del análisis estadístico descriptivo de las variables estudiadas y las ventajas y desventajas al aplicar dichos tests.}
+{\small Este capítulo presenta los resultados obtenidos al aplicar las metodologías descritas en el capítulo anterior, se exponen las respuestas a las preguntas planteadas y los resultados de los objetos específicos, por medio de visualizaciones (creación de gráficos) que ayudan a mostrar las distribuciones y relaciones de una forma mas interactiva.}
 
 \section{Presentación de resultados 1}
 
-Descripción\
+¿Existen categorías donde los descuentos son más altos que el resto del catálogo y, si éstas existen, hay alguna relación entre el precio original y su porcentaje de descuento?\
 
 \section{Presentación de resultados 2}
 
