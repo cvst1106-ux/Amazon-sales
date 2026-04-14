@@ -5,17 +5,33 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 # Se elige la paleta de colores que se van a usar en los graficos
-Amazon = ["#D46A07", "#1D2B44", "#3A5285", "#AFAFB3"]
+Amazon = ["#E26F00",  
+    "#EEEADF",
+    "#04275C", 
+    "#959086",
+    "#10436A",
+    "#668779", 
+    "#A35139",
+    "#5472D5",
+    "#F5C856" ]
 # se configura como se ve la pestaña
 st.set_page_config(
     page_title = "Dashboard Amazon",
-    page_icon = "📊")
-# Se configura el titulo de la pagina
-st.title("Analisis de precios y descuentos de Amazon", text_alignment = "center")
-st.write("**Dashboard interactivo** del análisis del catálogo de Amazon," \
+    page_icon = "amazon-icon-seeklogo.png",
+    layout= "wide")
+
+
+# Se configura el titulo de la pagina y el logoo
+#main?
+col1,col2 = st.columns([0.2,0.8])
+with col1:
+    st.image("Amazon_dashboard__3_-removebg-preview.png", width=400)
+with col2:
+    st.title("Analisis de precios y descuentos de Amazon",text_alignment = "center" )
+st.write("#### Dashboard interactivo del análisis del catálogo de Amazon," \
 " acerca de la relación entre precios originales, descuentos y categorías.")
 st.markdown("---")
-# Se carga el archivo
+# Se carga el archivo con el cache
 @st.cache_data
 def cargar_datos():
     df = pd.read_csv("amazon_limpio.csv")
@@ -23,58 +39,163 @@ def cargar_datos():
 df = cargar_datos()
 # Se manipula la variable categoria para poder trabajar con su primer elemento de la lista
 df['subcategoria'] = df['categoria'].str.split('|').str[0]
+
+# se agrupan precios por categorias con cuartiles
+económico = df["precio_original"].quantile(0.25)
+lujo = df["precio_original"].quantile(0.75)
+def clasificar_producto(precio):
+    if precio <= económico:
+        return "Económico"
+    elif precio >= lujo:
+        return "Lujo"
+    else:
+        return "Estandar"
+df["categoria_de_precio"]  = df["precio_original"].apply(clasificar_producto)
+        
 # Se configura la barra lateral
 with st.sidebar:
- # Se coloca un filtrado por categoria
-    st.sidebar.header("filtro por categoria 🔎")
-    categoria = st.multiselect(
-    "Selecciona las categorias:",
-    options=df["subcategoria"].unique())
+# Se coloca un filtro por categoria
+    st.header("categoría por producto 🔎")
+    filtro1 = st.multiselect(
+    "Selecciona las categorías:",
+    options=df["subcategoria"].unique(),
+    default=df["subcategoria"].unique())
     st.markdown("---")
-# Se coloca un filtrado por precio y uno por descuento
+# Se agrega un filtro por categoria de precio
+    st.header("🏷️categoría por precio")
+    filtro2 =  st.multiselect("Selecciona las categorías:",
+    options=df["categoria_de_precio"].unique(),
+    default=df["categoria_de_precio"].unique())
+    st.markdown("***")
+# Se coloca un filtrado por precio y uno por descuento 
+    descuento_min = int(df["porcentaje_descuento"].min())
+    descuento_max = int(df["porcentaje_descuento"].max())
+    filtro3 = st.slider(
+        "porcentaje de descuento (%):",
+        min_value=0,
+        max_value=100,
+        value=(0,100),
+        format="%d%%")
+   
     precio_min = int(df["precio_original"].min())
     precio_max = int(df["precio_original"].max())
-    rango_precio = st.slider(
+    filtro4 = st.slider(
         "Rango de precio (₹):",
         min_value=precio_min,
         max_value=precio_max,
         value=(precio_min, precio_max),
         step=100,
         format="₹%d")
-    
-    precio_min = int(df["precio_descuento"].min())
-    precio_max = int(df["precio_descuento"].max())
-    rango_precio = st.slider(
-        "porcentaje de descuento (%):",
-        min_value=0,
-        max_value=100,
-        value=(0,100),
-        format="%d%%")
     st.markdown("***")
-    
-    economico = df["precio_original"].quantile(0.25)
-    lujo = df["precio_original"].quantile(0.75)
-    def clasificar_producto(precio):
-        if precio <= economico:
-            return "Económico"
-        elif precio >= lujo:
-            return "Lujo"
-        else:
-            return "Estandar"
-    
-    df["categoria_de_precio"]  = df["precio_original"].apply(clasificar_producto)
-    precio_por_categoria = st.multiselect("Selecciona las categorias:",
-    options=df["categoria_de_precio"].unique())
-    
-# se añaden columnas con informacion relevante
-st.header("")
 
-col1, col2 = st.columns(2)
+
+# Se conecta los filtros con los graficos y columnas para que sea interactivo
+
+if filtro1:
+    f_categoria = df["subcategoria"].isin(filtro1)
+else:
+    f_categoria = True
+if filtro2:
+    f_cprecio = df["categoria_de_precio"].isin(filtro2)
+else:
+    f_cprecio = True
+f_porcentaje =(df["porcentaje_descuento"]>= descuento_min) & (df["porcentaje_descuento"]<= descuento_max)
+f_precio = (df["precio_original"]>= precio_min) & (df["precio_original"]<= precio_max)
+
+df_filtrado = df[f_categoria & f_cprecio & f_porcentaje & f_precio]
+
+# se añaden columnas interactivas con informacion relevante
+st.header("Resumen del catalogo de Amazon")
+
+col1, col2, col3,col4 = st.columns(4)
 
 with col1:
-    st.metric("📦 Total de productos", f"{len(df):,}", border= True)
-
+    st.metric("📦 Total de productos", f"{len(df_filtrado):,}", border= True)
 with col2:
-    st.metric(" Categorías", df["subcategoria"].nunique(), border= True)
+    st.metric("📚 Categorías", df_filtrado["subcategoria"].nunique(), border= True)
+with col3:
+    st.metric("💸 Precio promedio",f'₹{df_filtrado["precio_original"].mean():,.0f}', border= True)
+with col4:
+    st.metric("✂️ Descuento promedio", f'{df_filtrado["porcentaje_descuento"].mean().round(1)}%', border= True)
 
+# Se crean pestañas para organizar mejor el dashboard
+tab1, tab2, tab3, tab4 = st.tabs(["🔍Resumen del catalogo", "📊Distribucion por categoría", "📈Analisis de precios y descuentos","📋Dataframe"])
+with tab1:
+  
+    st.divider()
+    st.subheader("estadisticas generales de los productos", text_alignment= "center")
+    st.write(df_filtrado[["precio_original", "precio_descuento", "porcentaje_descuento"]].describe())
+
+with tab2:
+    st.write("### Distribucion de productos")
+#primer grafico : cantidad de productos por categoria
+    cantidad_productos = df_filtrado["subcategoria"].value_counts().reset_index()
+    fig1 =px.bar(cantidad_productos,
+        x= "subcategoria",
+        y="count",
+        title="📦 Cantidad de productos por categoría",
+        labels= {"subcategoria": "Categoría", "count":"Cantidad de productos"},
+        color_discrete_sequence= Amazon
+        )
+    st.plotly_chart(fig1, use_container_width=True)
+    st.divider()
+#grafico 2 : distribucion de precios
+    st.write("### Distribución de precios")
+
+    fig2 = px.box(
+        df_filtrado,
+        x="categoria_de_precio",
+        y =  "precio_original",
+        color="categoria_de_precio",
+        title="📊 Distribución de precios por categoría (Economico/Estandar/Lujo)",
+        labels= {"precio_original" : "Precio original (₹)", "categoria_de_precio" : "Categoría de precio"},
+        color_discrete_sequence= Amazon
+    )
+    st.plotly_chart(fig2, use_container_width=True)
+#
+    st.divider()
+    st.write("### ")
+    fig3 = px.histogram(
+        df_filtrado,
+        x="precio_original",
+        color="subcategoria",
+        title=""
+    )
+    st.plotly_chart(fig3, use_container_width=True)
+
+
+with tab3:
+    st.write("### Relacion entre precios y descuento")
+    fig4 = px.scatter(df_filtrado,
+        x = "porcentaje_descuento",
+        y = "precio_original",
+        color = "subcategoria",
+        title = "🔄 Relación: Descuento vs Precio original por categoría",
+        labels={"porcentaje_descuento": "Descuento (%)", "precio_original": "Precio original (₹)"},
+        color_discrete_sequence= Amazon)
+    st.plotly_chart(fig4, use_container_width=True)
+
+    st.divider()
+    st.write("### Mapa de calor")
+    correlacion = df_filtrado[["precio_original", "precio_descuento", "porcentaje_descuento"]].corr()
+    fig5 = px.imshow(
+    correlacion,
+    text_auto=True,
+    color_continuous_scale="RdBu",
+    title="🌡️ Correlaciones entre variables")
+    st.plotly_chart(fig5, use_container_width=True)
+    
+    fig6 = px.box(
+    df_filtrado,
+    x="subcategoria",
+    y="precio_original",
+    color="subcategoria",
+    title="🎚️ Distribución de precios por categoría",
+    color_discrete_sequence= Amazon)
+    st.plotly_chart(fig6, use_container_width=True)
+   
+
+with tab4:
+    st.write("")
+    st.dataframe(df_filtrado.style.highlight_max(axis=0))
 
