@@ -19,6 +19,35 @@ st.set_page_config(
     page_title = "Dashboard Amazon",
     page_icon = "amazon-icon-seeklogo.png",
     layout= "wide")
+# Diseño de la pagina
+st.markdown("""
+<style>
+/* columnas con stMetric */
+        [data-testid="stMetric"] {
+    border-left: 4px solid #FF9900;
+    border-radius: 10px;
+    background-color: #0A1931 ;
+}
+/* Botones */
+        .stTabs [role="tab"][aria-selected="true"] {
+    background-color: #FF9900;
+    color: #232F3E;
+    border-radius: 8px 8px 0 0;
+}
+/* Celdas de la tabla */
+.stDataFrame td {
+    background-color: #0A1931 !important;
+    color: #FFFFFF !important;
+}
+
+/* Borde de la tabla */
+.stDataFrame {
+    border: 2px solid #FF9900 !important;
+    border-radius: 10px;
+}
+</style>
+
+""", unsafe_allow_html=True)
 
 
 # Se configura el titulo de la pagina y el logoo
@@ -121,7 +150,19 @@ with col4:
 # Se crean pestañas para organizar mejor el dashboard
 tab1, tab2, tab3, tab4 = st.tabs(["🔍Resumen del catalogo", "📊Distribucion por categoría", "📈Analisis de precios y descuentos","📋Dataframe"])
 with tab1:
-  
+    col1, col2 = st.columns([0.2 , 0.8])
+    with col1:
+        with st.container(border = True):
+            st.markdown("### 🔝Top 10 productos con precios mas altos")
+    with col2:
+        st.dataframe(df_filtrado.nlargest(10, "precio_original")[["nombre_producto","precio_original","precio_descuento","porcentaje_descuento","categoria"]])
+    st.divider()
+    col1, col2 = st.columns([0.8, 0.2])
+    with col1:
+        st.dataframe(df_filtrado.nlargest(10, "porcentaje_descuento")[["nombre_producto","porcentaje_descuento","precio_original","precio_descuento","categoria"]])
+    with col2:
+        with st.container(border = True):
+            st.subheader("🔝Top 10 productos con mayor descuento")
     st.divider()
     st.subheader("estadisticas generales de los productos", text_alignment= "center")
     st.write(df_filtrado[["precio_original", "precio_descuento", "porcentaje_descuento"]].describe())
@@ -152,19 +193,22 @@ with tab2:
         color_discrete_sequence= Amazon
     )
     st.plotly_chart(fig2, use_container_width=True)
-#
+#grafico de distribucion de categoria
     st.divider()
-    st.write("### ")
+    st.write("### Distribución de categorías ")
     fig3 = px.histogram(
         df_filtrado,
         x="precio_original",
         color="subcategoria",
-        title=""
+        title="📊 Distribucion de p por categoría",
+        labels={ "precio_original": "Precio original (₹)", "subactegoria": "Categoría"},
+        color_discrete_sequence= Amazon
     )
     st.plotly_chart(fig3, use_container_width=True)
 
 
 with tab3:
+    #grafico de dispersion
     st.write("### Relacion entre precios y descuento")
     fig4 = px.scatter(df_filtrado,
         x = "porcentaje_descuento",
