@@ -23,4 +23,4 @@ tidyverse, ggplot2, knitr, LaTeX
 
 
 link del dashboard: https://amazon-sales.onrender.com/
-link del informe pdf:
+link del informe pdf: https://35b19b37df8f4a3ca4c8cda3df85a019.app.posit.cloud/pdf_js/web/viewer.html?file=
