@@ -33,7 +33,7 @@ output:
 
 # --- Resumen (Abstract) ---
 abstract: |
-  Resumen del trabajo de investigación...
+  En el presente informe se realiza un análisis estadístico descriptivo de las ventas de Amazon India, su estrategia de precios y descuentos, a partir de un conjunto de datos de 1.465 productos, siendo el objetivo principal describir la estructura del catálogo. Como principales hallazgos se indica que el catálogo de Amazon Presenta una alta heterogeneidad con pocas categorías dominantes qué concentran la mayoría de los productos, se identificó que no existe ningún tipo de correlación entre el precio original y el porcentaje de descuento, lo que sugiere que no existe ningún tipo de estrategia al momento de aplicarle descuentos a los precios, además, se detectaron valores atípicos atípicos en los precios, que reflejan la diversidad del mercado indio.
 ---
 
 ```{r setup, include=FALSE}
@@ -90,7 +90,9 @@ IQR_val <- Q3 - Q1
 limite_inferior <- Q1 - 1.5 * IQR_val
 limite_superior <- Q3 + 1.5 * IQR_val
 
-is.na.data.frame("Amazon SAles.11.csv")
+is.na.data.frame("Amazon Sales.11.csv")
+
+colSums(is.na(df_limpio[, c("actual_price", "discount_percentage", "discounted_price")]))
 
 
 ```
@@ -200,24 +202,62 @@ Suministran materias primas o componentes utilizados en la producción. \
 
 Es la persona que realiza la transacción de compra, el término comprador suele tener un matiz transaccional, ya que se refiere únicamente a la acción de comprar. \
 
-\chapter{Marco Metódico}
+\chapter{Marco Metodólogico}
 En este capítulo se presentan los fundamentos estadísticos empleados que hicieron posible analizar la base de datos, la cual fue obtenida de Kaggle y se titula "Amazon Sales", contiene una parte del catálogo de Amazon India; la misma, se conforma de 16 columnas y 1465 filas, se le realizó una limpieza de columnas, dejando así solo 6 que serían las variables clave para este análisis. Esta investigación adopta un enfoque cuantitativo, de tipo descriptivo-correlacional.
  
  
-\section{Bases metódicas utilizadas en el trabajo de investigación}
+\section{Metodología utilizada en el trabajo de investigación}
 
 A través de la estadística descriptiva, se examinarán los datos para responder las preguntas de investigación planteadas. Se utilizará la media aritmética en este trabajo para saber el precio promedio por categoría para el análisis de la estructura de precios del catálogo, está se va a comparar con la mediana, para reconocer si hay productos que afecten significativamente al promedio; también, se usarán medidas como, el rango (podemos saber que tan amplia es la diferencia de precios), rango intercuartílico (mide la dispersión del 50% central de los datos y se utiliza para identificar valores atípicos), desviación típica (indica la dispersión de los datos, si es mayor, significa que están más dispersos los datos), varianza (permite comparar la variabilidad entre categorías con precios muy diferentes) y correlación (si dos variables se relacionan de forma lineal o inversa).\
 
 
-
 ```{r}
-#Este es para dividir las categorias y sacar la "principal"
-
 library(tidyverse)
 library(knitr)
 library(kableExtra)
 library(scales)
 library(janitor)
+
+#Carga del archivo
+df <- read.csv("11. Amazon Sales.csv", encoding = "UTF-8")
+
+#Limpieza completa
+df_limpio_cap3 <- df %>%
+  mutate(
+    actual_price = as.numeric(gsub("[^0-9.]", "", actual_price)),
+    discounted_price = as.numeric(gsub("[^0-9.]", "", discounted_price )),
+    discount_percentage = as.numeric(gsub("[^0-9.]", "", discount_percentage)) / 100
+  )
+
+#Recalculo de %
+df_limpio <- df_limpio %>%
+  mutate(
+    discounted_price = actual_price - (actual_price * discount_percentage),
+    discounted_price = round(discounted_price, 0)
+  )
+
+#Cálculo de outliers
+Q1 <- quantile(df_limpio$actual_price, 0.25, na.rm = TRUE)
+Q3 <- quantile(df_limpio$actual_price, 0.75, na.rm = TRUE)
+IQR_val <- Q3 - Q1
+
+limite_inferior <- Q1 - 1.5 * IQR_val
+limite_superior <- Q3 + 1.5 * IQR_val
+
+
+
+#Filtrado final y quitar null, na
+df_sin_atipicos <- df_limpio %>%
+  filter(actual_price >= limite_inferior & actual_price <= limite_superior)
+
+
+```
+
+
+
+
+```{r}
+#Dividir las categorias y sacar la "principal" y las estadisticas descriptivas 
 
 resumen_categoria <- df_limpio %>%
   group_by(category) %>%
@@ -245,20 +285,12 @@ resumen_categoria <- resumen_categoria %>%
 
 
 
-
-\subsection{Item 1}
-
-Descripción\
-
-
-
 \chapter{Análisis de Resultados}
 
 \small Este capítulo presenta los resultados obtenidos al aplicar las metodologías descritas en el capítulo anterior, se exponen las respuestas a las preguntas planteadas y los resultados de los objetos específicos, por medio de visualizaciones (creación de gráficos) que ayudan a mostrar las distribuciones y relaciones de una forma mas interactiva.
 
 \section {¿Existen categorías donde los descuentos son más altos que el resto del catálogo y, si éstas existen, hay alguna relación entre el precio original y su porcentaje de descuento?}
 
-respuesta\
 
 ```{r}
 library(ggplot2)
@@ -288,22 +320,32 @@ theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
     y = "Porcentaje Máximo (%)"
   )
 
+#Gráfico de correlación 
+
+
+correlacion <- cor(Categorias$actual_price, 
+                   Categorias$discount_percentage, 
+                   use = "complete.obs")
+
+
+Categorias %>%
+  ggplot(aes(x = actual_price, y = discount_percentage)) +
+  geom_point(alpha = 0.5, color = "orange") + 
+  labs(
+    title = "Relación entre Precio Actual y % de Descuento",
+    subtitle = paste("Correlación de Pearson:", round(correlacion, 2)),
+    x = "Precio Actual",
+    y = "Porcentaje de Descuento (%)"
+  ) +
+  theme_minimal()
+
 ```
+Sí, hay categorías que notablemente poseen descuentos más altos, la correlación que se distingue es negativa (inversa) y muy baja.\
 
-
-
-```{r}
-
-# Se hace un cuadro de dispersión entre categorias y porcentajes de descuento, también uno de correlacion entre el precio original y el % de descuento 
-
-
-
-```
 
 
 \section{¿La distribución de los productos está equilibrada entre categorías o, el catálogo es predominante y más voluminoso en otras categorías?}
 
-Respuesta\
 
 ```{r}
 library(ggplot2)
@@ -320,22 +362,33 @@ Categorias%>%
   )
 ```
 
+No, el catálogo no esta esta equilibrado, notablemente por el gráfico se concluye que su categoría mas predominante es "Electronics".\
 
 \section{¿Dentro de las categorías, conviven productos de distintos rangos de precios o existe una homogeneidad entre ellos?}
 
-Descripción\
 
-```{r}
+```{r, results='asis'}
+library(dplyr)
+library(knitr)
+library(kableExtra)
 
 Diferencias_precios <- Categorias %>%
   group_by(categoria_principal) %>%
   summarise(
-    "Mínimo" = min(actual_price),
-    "Máximo" = max(actual_price),
+    Precio_Minimo = min(actual_price, na.rm = TRUE),
+    Precio_Maximo = max(actual_price, na.rm = TRUE)
   )
 
+Diferencias_precios %>%
+  kable(
+    booktabs = TRUE, 
+    col.names = c("Categoría", "Precio Mínimo", "Precio Máximo"),
+    caption = "Resumen de Precios por Categoría"
+  ) %>%
+  kable_styling(latex_options = c("striped", "hold_position"))
 ```
 
+Sí, existen categorías donde la diferencia de precios es alta, se ve heterogeneidad\
 
 \chapter{Conclusiones y Recomendaciones}
 
@@ -356,9 +409,6 @@ Recomendación 2 del trabajo de investigación.\
 \appendix
 \renewcommand{\thechapter}{\Alph{chapter}}
 
-\chapter{Anexo A}
+\chapter{Bibliografias}
 
-\chapter{Anexo B}
-
-\chapter{Anexo C}
 
