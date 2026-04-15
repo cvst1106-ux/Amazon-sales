@@ -376,16 +376,19 @@ Diferencias_precios <- Categorias %>%
   group_by(categoria_principal) %>%
   summarise(
     Precio_Minimo = min(actual_price, na.rm = TRUE),
-    Precio_Maximo = max(actual_price, na.rm = TRUE)
+    Precio_Maximo = max(actual_price, na.rm = TRUE),
+    Diferencia     = Precio_Maximo - Precio_Minimo 
   )
 
 Diferencias_precios %>%
   kable(
     booktabs = TRUE, 
-    col.names = c("Categoría", "Precio Mínimo", "Precio Máximo"),
+    col.names = c("Categoría", "Precio Mínimo", "Precio Máximo", "Brecha"),
     caption = "Resumen de Precios por Categoría"
   ) %>%
   kable_styling(latex_options = c("striped", "hold_position"))
+
+
 ```
 
 Sí, existen categorías donde la diferencia de precios es alta, se ve heterogeneidad\
@@ -411,4 +414,18 @@ Recomendación 2 del trabajo de investigación.\
 
 \chapter{Bibliografias}
 
+Prysync: https://prisync.com/es/diccionario-de-precios/variacion-de-precios/ \
 
+Statistic: https://www.statisticshowto.com/homogeneity-and-heterogeneity-in-statistics/ \
+
+Questionpro: https://www.questionpro.com/blog/es/varianza/ \
+
+Inbestme: https://www.inbestme.com/es/es/blog/que-es-la-correlacion/\
+
+Translate Google: https://ramp-com.translate.goog/blog/vendor-vs-supplier?_x_tr_sl=en&_x_tr_tl=es&_x_tr_hl=es&_x_tr_pto=tc&_x_tr_hist=true \
+
+Blog empresas: https://blogempresas.yoigo.com/usuario-consumidor-cliente-comprador-son-lo-mismo/\
+
+Arimetrics: https://www.arimetrics.com/glosario-digital/amazon \
+
+Cyberclick: https://www.cyberclick.es/numerical-blog/ventajas-y-desventajas-de-vender-en-amazon-marketplace \
