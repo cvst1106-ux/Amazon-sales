@@ -13,5 +13,14 @@ Describir la estructura del inventario de Amazon y analizar su estrategia de pre
 1. Analizar las diferencias entre productos similares, y la relación de precios entre el precio original y su porcentaje descuento en categorías con precios más altos.
 2. Identificar el número de productos existentes en cada categoría para determinar si el catálogo está distribuido equilibradamente o está concentrado en pocas categorías dominantes.
 3. Evaluar  la variabilidad de precios dentro de cada categoría para determinar si existen diferencias significativas entre productos de distintos rangos o si hay homogeneidad.
+---
+### Lenguajes y Librerías utilizados
+***Python***:
+streamlit, pandas, plotly, numpy
+
+***R***: 
+tidyverse, ggplot2, knitr, LaTeX
+
 
 link del dashboard: https://amazon-sales.onrender.com/
+link del informe pdf:
