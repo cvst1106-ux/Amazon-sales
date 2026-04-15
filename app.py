@@ -185,8 +185,10 @@ with tab2:
         color="categoria_de_precio",
         title="📊 Distribución de precios por categoría (Economico/Estandar/Lujo)",
         labels= {"precio_original" : "Precio original (₹)", "categoria_de_precio" : "Categoría de precio"},
+        facet_col="categoria_de_precio",
         color_discrete_sequence= Amazon
     )
+    fig2.update_yaxes(matches=None, showticklabels=True)
     st.plotly_chart(fig2, use_container_width=True)
 
 with tab3:
@@ -219,6 +221,7 @@ with tab3:
     color="subcategoria",
     title="🎚️ Distribución de precios por categoría",
     color_discrete_sequence= Amazon)
+    
     st.plotly_chart(fig6, use_container_width=True)
    
 
