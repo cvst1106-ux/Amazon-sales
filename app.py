@@ -7,7 +7,7 @@ import plotly.express as px
 # Se elige la paleta de colores que se van a usar en los graficos
 Amazon = ["#E26F00",  
     "#EEEADF",
-    "#04275C", 
+    "#000000", 
     "#959086",
     "#10436A",
     "#668779", 
@@ -86,7 +86,7 @@ with st.sidebar:
 # Se coloca un filtro por categoria
     st.header("categoría por producto 🔎")
     filtro1 = st.multiselect(
-    "Selecciona las categorías:",
+    "selecciona las categoria:",
     options=df["subcategoria"].unique(),
     default=df["subcategoria"].unique())
     st.markdown("---")
@@ -105,16 +105,6 @@ with st.sidebar:
         max_value=100,
         value=(0,100),
         format="%d%%")
-   
-    precio_min = int(df["precio_original"].min())
-    precio_max = int(df["precio_original"].max())
-    filtro4 = st.slider(
-        "Rango de precio (₹):",
-        min_value=precio_min,
-        max_value=precio_max,
-        value=(precio_min, precio_max),
-        step=100,
-        format="₹%d")
     st.markdown("***")
 
 
@@ -123,21 +113,20 @@ with st.sidebar:
 if filtro1:
     f_categoria = df["subcategoria"].isin(filtro1)
 else:
-    f_categoria = True
+    f_categoria = df["subcategoria"] == df["subcategoria"]
 if filtro2:
     f_cprecio = df["categoria_de_precio"].isin(filtro2)
 else:
-    f_cprecio = True
+    f_cprecio = df["categoria_de_precio"] == df["categoria_de_precio"]
 f_porcentaje =(df["porcentaje_descuento"].between(filtro3[0], filtro3[1]))
-f_precio = (df["precio_original"].between(filtro4[0], filtro4[1]))
 
-df_filtrado = df[f_categoria & f_cprecio & f_porcentaje & f_precio]
+df_filtrado = df[f_categoria & f_cprecio & f_porcentaje]
 
 df_cat = df[f_categoria]
 
 if len(df_filtrado) == 0: 
-    st.warning("⚠️ No hay productos con esos filtros. Intenta con otros rangos.")
-    st.stop()
+    st.warning(" No hay productos con esos filtros. Intenta con otros rangos.")
+   
 
 # se añaden columnas interactivas con informacion relevante
 st.header("Resumen del catalogo de Amazon")
@@ -151,7 +140,7 @@ with col2:
 with col3:
     st.metric("💸 Precio promedio",f'₹{df_filtrado["precio_original"].mean():,.0f}', border= True)
 with col4:
-    st.metric("✂️ Descuento promedio", f'{df_filtrado["porcentaje_descuento"].mean().round(1)}%', border= True)
+    st.metric("✂️ Descuento promedio", f'{df_filtrado["porcentaje_descuento"].mean():.2f}%', border= True)
 
 # Se crean pestañas para organizar mejor el dashboard
 tab1, tab2, tab3, tab4 = st.tabs(["🔍Resumen del catalogo", "📊Distribucion por categoría", "📈Analisis de precios y descuentos","📋Dataframe"])
@@ -199,19 +188,6 @@ with tab2:
         color_discrete_sequence= Amazon
     )
     st.plotly_chart(fig2, use_container_width=True)
-#grafico de distribucion de categoria
-    st.divider()
-    st.write("### Distribución de categorías ")
-    fig3 = px.histogram(
-        df_filtrado,
-        x="precio_original",
-        color="subcategoria",
-        title="📊 Distribucion de p por categoría",
-        labels={ "precio_original": "Precio original (₹)", "subactegoria": "Categoría"},
-        color_discrete_sequence= Amazon
-    )
-    st.plotly_chart(fig3, use_container_width=True)
-
 
 with tab3:
     #grafico de dispersion
@@ -222,7 +198,8 @@ with tab3:
         color = "subcategoria",
         title = "🔄 Relación: Descuento vs Precio original por categoría",
         labels={"porcentaje_descuento": "Descuento (%)", "precio_original": "Precio original (₹)"},
-        color_discrete_sequence= Amazon)
+        color_discrete_sequence= Amazon,
+        opacity=0.6)
     st.plotly_chart(fig4, use_container_width=True)
 
     st.divider()
