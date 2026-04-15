@@ -41,7 +41,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                         DATOS (Conectados a RMarkdown)                       %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{Título del Trabajo Final}
+\title{Análisis del Catálogo de Amazon y Estrategia de Precios}
 \author{Mariangel Morales \\ Camila Santiago}
 
 % Lógica para Facultad: Si la defines en el YAML la usa, si no, usa la default
@@ -97,8 +97,16 @@ Estadistica y Ciencias Actuariales}
   \chapter*{Resumen}     % Crea el título "Resumen" sin numeración (Capítulo *)
   \addcontentsline{toc}{chapter}{Resumen} % (Opcional) Lo añade al índice
   
-  Resumen del trabajo de
-investigación\ldots{}             % Aquí se pega el texto que escribiste en el YAML
+  En el presente informe se realiza un análisis estadístico descriptivo
+de las ventas de Amazon India, centrándose en su estructura del catalogo
+y su estrategia de precios. Como principales hallazgos se indica que el
+catálogo de Amazon Presenta una alta heterogeneidad con pocas categorías
+dominantes qué concentran la mayoría de los productos, se identificó la
+ausencia de correlación entre el precio original y el porcentaje de
+descuento, lo que sugiere que no hay ninguna estrategia al momento de
+aplicarle descuentos a los precio. Además, la detectaron valores
+atípicos en los precios reflejan la diversidad económica del mercado
+indio.             % Aquí se pega el texto que escribiste en el YAML
   
   \cleardoublepage
 
@@ -111,12 +119,14 @@ investigación\ldots{}             % Aquí se pega el texto que escribiste en el
 % --- CAMBIO CRÍTICO 2: Aquí RMarkdown inyecta todo tu texto ---
 \chapter*{Introducción}
 
-Amazon es una multinacional tecnológica estadounidense que ha
-evolucionado rápidamente desde su creación en 1994. A pesar de su éxito
-comercial, su amplitud y variedad en el mercado presenta dificultades
-para los vendedores y compradores. Esta investigación pretende aclarar
-las dudas relacionadas a los precios, porcentajes de descuento y
-diferencias de estos entre categorías
+Desde la llegada de Amazon a India en junio de 2013. la empresa se ha
+ido consolidando rápidamente en el comercio electrónico del país,
+ofreciendo una amplia gama de productos y servicios a los consumidores
+locales. Este trabajo tiene como propósito analizar la estructura del
+catálogo Amazon a partir de un conjunto de datos de 1.465 productos, con
+el objetivo de responder las interrogantes planteadas sobre la
+concentración de categorías, la variabilidad de los precios y una
+posible estrategia de descuento.
 
 \chapter{Planteamiento del Problema}
 
@@ -132,7 +142,9 @@ gratuitos ilimitados en dos días para millones de productos, además de
 otras ventajas exclusivas (2003), así como también, lanza Kindle
 e-lector y abrir una tienda física en Seattle (2006); su expansión
 continúa con servicios en la nube, más variedad de productos, sucursales
-en todo el mundo y Amazon music (2011).\\
+en todo el mundo y Amazon music (2011). En el contexto de India, opera
+bajo el nombre de Amazon India, donde los precios se expresan en rupias.
+
 A pesar de su éxito comercial, su amplitud y variedad en el mercado
 presenta dificultades para los vendedores, entre ellas, se señala que
 Amazon tiende a priorizar sus propios productos frente a los de
@@ -198,7 +210,9 @@ informe técnico.\\
 
 \section{Variables}
 
-Describir la variable en estudio en el trabajo de investigación
+Se tienen variables cualitativas nominales (id del producto, nombre del
+producto, categoria) y cuantitativas continuas de razón (precio
+original, porcentaje de descuento, precio con descuento).
 
 \chapter{Marco Teórico}
 
@@ -276,7 +290,7 @@ Es la persona que realiza la transacción de compra, el término comprador
 suele tener un matiz transaccional, ya que se refiere únicamente a la
 acción de comprar.\\
 
-\chapter{Marco Metódico}
+\chapter{Marco Metodólogico}
 
 En este capítulo se presentan los fundamentos estadísticos empleados que
 hicieron posible analizar la base de datos, la cual fue obtenida de
@@ -286,7 +300,7 @@ realizó una limpieza de columnas, dejando así solo 6 que serían las
 variables clave para este análisis. Esta investigación adopta un enfoque
 cuantitativo, de tipo descriptivo-correlacional.
 
-\section{Bases metódicas utilizadas en el trabajo de investigación}
+\section{Metodología utilizada en el trabajo de investigación}
 
 A través de la estadística descriptiva, se examinarán los datos para
 responder las preguntas de investigación planteadas. Se utilizará la
@@ -302,9 +316,12 @@ están más dispersos los datos), varianza (permite comparar la
 variabilidad entre categorías con precios muy diferentes) y correlación
 (si dos variables se relacionan de forma lineal o inversa).\\
 
-\subsection{Item 1}
-
-Descripción\\
+Se van a cargar las librerias tidyverse, knitr, kableExtra, scales,
+janitor y ggplot2 para el manejo de los datos, se carga el dataset para
+la limpieza, Se eliminarán las columnas que no aportan al analisis de la
+investigación, Se identifican los valores nulos del dataset, Se calculan
+los cuartiles y el rango intercuartilico para identificar los datos
+atipicos
 
 \chapter{Análisis de Resultados}
 
@@ -317,21 +334,44 @@ interactiva.
 
 \section {¿Existen categorías donde los descuentos son más altos que el resto del catálogo y, si éstas existen, hay alguna relación entre el precio original y su porcentaje de descuento?}
 
-respuesta\\
+\begin{center}\includegraphics[width=0.9\linewidth,]{informe_files/figure-latex/unnamed-chunk-3-1} \end{center}
 
-\begin{center}\includegraphics[width=0.9\linewidth,]{informe_files/figure-latex/unnamed-chunk-2-1} \end{center}
+\begin{center}\includegraphics[width=0.9\linewidth,]{informe_files/figure-latex/unnamed-chunk-3-2} \end{center}
 
-\begin{center}\includegraphics[width=0.9\linewidth,]{informe_files/figure-latex/unnamed-chunk-2-2} \end{center}
+\begin{center}\includegraphics[width=0.9\linewidth,]{informe_files/figure-latex/unnamed-chunk-3-3} \end{center}
+
+Sí, hay categorías que notablemente poseen descuentos más altos, la
+correlación que se distingue es negativa (inversa) y muy baja.\\
 
 \section{¿La distribución de los productos está equilibrada entre categorías o, el catálogo es predominante y más voluminoso en otras categorías?}
 
-Respuesta\\
-
 \begin{center}\includegraphics[width=0.9\linewidth,]{informe_files/figure-latex/unnamed-chunk-4-1} \end{center}
+
+No, el catálogo no esta esta equilibrado, notablemente por el gráfico se
+concluye que su categoría mas predominante es ``Electronics''.\\
 
 \section{¿Dentro de las categorías, conviven productos de distintos rangos de precios o existe una homogeneidad entre ellos?}
 
-Descripción\\
+\begin{longtable}[t]{lrrr}
+\caption{\label{tab:unnamed-chunk-5}Resumen de Precios por Categoría}\\
+\toprule
+Categoría & Precio Mínimo & Precio Máximo & Brecha\\
+\midrule
+\cellcolor{gray!10}{Car\&Motorbike} & \cellcolor{gray!10}{4000} & \cellcolor{gray!10}{4000} & \cellcolor{gray!10}{0}\\
+Computers\&Accessories & 39 & 59890 & 59851\\
+\cellcolor{gray!10}{Electronics} & \cellcolor{gray!10}{171} & \cellcolor{gray!10}{139900} & \cellcolor{gray!10}{139729}\\
+Health\&PersonalCare & 1900 & 1900 & 0\\
+\cellcolor{gray!10}{Home\&Kitchen} & \cellcolor{gray!10}{79} & \cellcolor{gray!10}{75990} & \cellcolor{gray!10}{75911}\\
+\addlinespace
+HomeImprovement & 599 & 999 & 400\\
+\cellcolor{gray!10}{MusicalInstruments} & \cellcolor{gray!10}{699} & \cellcolor{gray!10}{1995} & \cellcolor{gray!10}{1296}\\
+OfficeProducts & 50 & 2999 & 2949\\
+\cellcolor{gray!10}{Toys\&Games} & \cellcolor{gray!10}{150} & \cellcolor{gray!10}{150} & \cellcolor{gray!10}{0}\\
+\bottomrule
+\end{longtable}
+
+Sí, existen categorías donde la diferencia de precios es alta, se ve
+heterogeneidad\\
 
 \chapter{Conclusiones y Recomendaciones}
 
@@ -350,11 +390,35 @@ Descripción\\
 \appendix
 \renewcommand{\thechapter}{\Alph{chapter}}
 
-\chapter{Anexo A}
+\chapter{Bibliografias}
 
-\chapter{Anexo B}
+Prysync:
+\url{https://prisync.com/es/diccionario-de-precios/variacion-de-precios/}\\
 
-\chapter{Anexo C}
+Statistic:
+\url{https://www.statisticshowto.com/homogeneity-and-heterogeneity-in-statistics/}\\
+
+Questionpro: \url{https://www.questionpro.com/blog/es/varianza/}\\
+
+Inbestme:
+\url{https://www.inbestme.com/es/es/blog/que-es-la-correlacion//}
+
+Translate Google:
+\url{https://ramp-com.translate.goog/blog/vendor-vs-supplier?_x_tr_sl=en&_x_tr_tl=es&_x_tr_hl=es&_x_tr_pto=tc&_x_tr_hist=true}\\
+
+Blog empresas:
+\url{https://blogempresas.yoigo.com/usuario-consumidor-cliente-comprador-son-lo-mismo//}
+
+Arimetrics: \url{https://www.arimetrics.com/glosario-digital/amazon}\\
+
+Cyberclick:
+\url{https://www.cyberclick.es/numerical-blog/ventajas-y-desventajas-de-vender-en-amazon-marketplace}\\
+
+Globalshopaholics:
+\url{https://globalshopaholics.com/es/blog/pros-y-contras-de-comprar-en-amazon/}\\
+
+Epinium:
+\url{https://epinium.com/es/blog/estrategiapreciosventa-amazon/\#}:\textasciitilde:text=lanzar\%20el\%20producto.-,\%C2\%BFCu\%C3\%A1l\%20es\%20la\%20estrategia\%20de\%20precios\%20de\%20venta\%20en\%20Amazon,ganar\%20la\%20\%E2\%80\%9CBuy\%20Box\%E2\%80\%9D.\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                   REFERENCIAS                     %

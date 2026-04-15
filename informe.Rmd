@@ -1,6 +1,6 @@
 ---
 # --- Metadatos Básicos ---
-title: "Título del Trabajo Final"
+title: "Análisis del Catálogo de Amazon y Estrategia de Precios"
 author:
    - Mariangel Morales
    - Camila Santiago
@@ -33,7 +33,9 @@ output:
 
 # --- Resumen (Abstract) ---
 abstract: |
-  En el presente informe se realiza un análisis estadístico descriptivo de las ventas de Amazon India, su estrategia de precios y descuentos, a partir de un conjunto de datos de 1.465 productos, siendo el objetivo principal describir la estructura del catálogo. Como principales hallazgos se indica que el catálogo de Amazon Presenta una alta heterogeneidad con pocas categorías dominantes qué concentran la mayoría de los productos, se identificó que no existe ningún tipo de correlación entre el precio original y el porcentaje de descuento, lo que sugiere que no existe ningún tipo de estrategia al momento de aplicarle descuentos a los precios, además, se detectaron valores atípicos atípicos en los precios, que reflejan la diversidad del mercado indio.
+ En el presente informe se realiza un análisis estadístico descriptivo de las ventas de Amazon India, centrándose en su estructura del catalogo y su estrategia de precios.
+ Como principales hallazgos se indica que el catálogo de Amazon Presenta una alta heterogeneidad con pocas categorías dominantes qué concentran la mayoría de los productos, se identificó la ausencia de correlación entre el precio original y el porcentaje de descuento, lo que sugiere que no hay ninguna estrategia al momento de aplicarle descuentos a los precio. Además, la detectaron valores atípicos en los precios  reflejan la diversidad económica del mercado indio.
+
 ---
 
 ```{r setup, include=FALSE}
@@ -99,15 +101,17 @@ colSums(is.na(df_limpio[, c("actual_price", "discount_percentage", "discounted_p
 
 \chapter*{Introducción}
 
-Amazon es una multinacional tecnológica estadounidense que ha evolucionado rápidamente desde su creación en 1994. A pesar de su éxito comercial, su amplitud y variedad en el mercado presenta dificultades para los vendedores y compradores. Esta investigación pretende aclarar las dudas relacionadas a los precios, porcentajes de descuento y diferencias de estos entre categorías
+Desde la llegada de Amazon a India en  junio de 2013.  la empresa se ha ido consolidando rápidamente en el comercio electrónico del país, ofreciendo una amplia gama de productos y servicios a los consumidores locales.  Este trabajo tiene como propósito analizar la estructura del catálogo Amazon  a partir de un conjunto de datos de 1.465 productos, con el objetivo de responder las interrogantes planteadas sobre la concentración de categorías, la variabilidad de los precios y una posible estrategia de descuento.
 
 \chapter{Planteamiento del Problema}
-Amazon es una multinacional tecnológica estadounidense, fundada por Jeff Bezos en 1994, posteriormente, en 1995 se convierte en uno de los primeros grandes minoristas en línea cuando empieza a vender libros de forma online, y en 1996 se expande a la música, el vídeo y otros productos, lanzando su primer sitio web no inglés en Canadá. Durante los 2000 se expande a nuevas categorías de productos, como juguetes y electrónica, y lanza su sitio web en otros idiomas. Amazon sigue creciendo y lanza su programa de afiliación Prime, que ofrece envíos gratuitos ilimitados en dos días para millones de productos, además de otras ventajas exclusivas (2003), así como también, lanza Kindle e-lector y abrir una tienda física en Seattle (2006); su expansión continúa con servicios en la nube, más variedad de productos, sucursales en todo el mundo y Amazon music (2011).  
+Amazon es una multinacional tecnológica estadounidense, fundada por Jeff Bezos en 1994, posteriormente, en 1995 se convierte en uno de los primeros grandes minoristas en línea cuando empieza a vender libros de forma online, y en 1996 se expande a la música, el vídeo y otros productos, lanzando su primer sitio web no inglés en Canadá. Durante los 2000 se expande a nuevas categorías de productos, como juguetes y electrónica, y lanza su sitio web en otros idiomas. Amazon sigue creciendo y lanza su programa de afiliación Prime, que ofrece envíos gratuitos ilimitados en dos días para millones de productos, además de otras ventajas exclusivas (2003), así como también, lanza Kindle e-lector y abrir una tienda física en Seattle (2006); su expansión continúa con servicios en la nube, más variedad de productos, sucursales en todo el mundo y Amazon music (2011).  En el contexto de India, opera bajo el nombre de Amazon India, donde los precios se expresan en rupias.
+
+
 A pesar de su éxito comercial, su amplitud y variedad en el mercado presenta dificultades para los vendedores, entre ellas, se señala que Amazon tiende a priorizar sus propios productos frente a los de terceros, además del elevado número de negocios que ofrecen otros productos muy similares en la plataforma. Tanto los vendedores independientes como sus competidores comercializan en el mismo escaparate, sin margen de conveniencia para ninguna de las partes. 
 La principal virtud de la era digital son los datos. Para las empresas esta es una valiosa información, pero Amazon no comparte estos datos con los vendedores que distribuyen a través de su plataforma. Los vendedores se encargan de llevar a cabo la transacción de los pedidos, pero no pueden acceder a los clientes individualmente. Esto dificulta cualquier intento de fidelización con sus consumidores; así, Amazon  posee el monopolio de los datos, y de las campañas promocionales. 
 Un ejemplo desfavorable de esto para los vendedores es la semana del Black Friday, durante las ofertas vigentes, los distribuidores de forma obligatoria tienen que ajustar sus ofertas y sus precios a lo establecido por la plataforma. 
 En este marketplace se paga un porcentaje por cada venta que se realice a través de la plataforma,  las comisiones de Amazon se encuentran entre el 7% y el 15% de la venta dependiendo del sector al que pertenezca el artículo. Además, deben pagar al mes o por venta el plan elegido. 
-Por esta razón las marcas o negocios que venden productos que tienen un bajo precio necesitan ampliar su catálogo o vender productos de mayor valor para que les sea rentable vender en el marketplace.
+Por esta razón las marcas o negocios que venden productos que tienen un bajo precio necesitan ampliar su catálogo o vender productos de mayor valor para que les sea rentable vender en el marketplace. 
 \
 
 En este sentido, se plantean las siguientes interrogantes:\
@@ -142,7 +146,7 @@ La presente investigación se justifica por su relevancia práctica y académica
 
 \section{Variables}
 
-Describir la variable en estudio en el trabajo de investigación
+Se tienen variables cualitativas nominales (id del producto, nombre del producto, categoria) y cuantitativas continuas de razón (precio original, porcentaje de descuento, precio con descuento).
 
 \chapter{Marco Teórico}
 
@@ -210,6 +214,8 @@ En este capítulo se presentan los fundamentos estadísticos empleados que hicie
 
 A través de la estadística descriptiva, se examinarán los datos para responder las preguntas de investigación planteadas. Se utilizará la media aritmética en este trabajo para saber el precio promedio por categoría para el análisis de la estructura de precios del catálogo, está se va a comparar con la mediana, para reconocer si hay productos que afecten significativamente al promedio; también, se usarán medidas como, el rango (podemos saber que tan amplia es la diferencia de precios), rango intercuartílico (mide la dispersión del 50% central de los datos y se utiliza para identificar valores atípicos), desviación típica (indica la dispersión de los datos, si es mayor, significa que están más dispersos los datos), varianza (permite comparar la variabilidad entre categorías con precios muy diferentes) y correlación (si dos variables se relacionan de forma lineal o inversa).\
 
+Se van a cargar las librerias tidyverse, knitr, kableExtra, scales, janitor y ggplot2 para el manejo de los datos, se carga el dataset para la limpieza, Se eliminarán las columnas que no aportan al analisis de la investigación, Se identifican los valores nulos del dataset, Se calculan los cuartiles y el rango intercuartilico para identificar los datos atipicos
+
 
 ```{r}
 library(tidyverse)
@@ -259,6 +265,14 @@ df_sin_atipicos <- df_limpio %>%
 ```{r}
 #Dividir las categorias y sacar la "principal" y las estadisticas descriptivas 
 
+#Este es para dividir las categorias y sacar la "principal"
+
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(scales)
+library(janitor)
+
 resumen_categoria <- df_limpio %>%
   group_by(category) %>%
   summarise(
@@ -277,8 +291,6 @@ Categorias <- df_limpio %>%
   mutate(categoria_principal = str_split(category, "\\|") %>% 
            sapply(function(x) x[1]))  
 
-resumen_categoria <- resumen_categoria %>%
-  mutate(Desviación = ifelse(is.na(Desviación), 0, Desviación))
 
 
 ```
@@ -340,7 +352,7 @@ Categorias %>%
   theme_minimal()
 
 ```
-Sí, hay categorías que notablemente poseen descuentos más altos, la correlación que se distingue es negativa (inversa) y muy baja.\
+Sí, por los gráficos mostrados se comprueba que existen categorías que notablemente poseen descuentos más altos (Computer-accesoriess, Electronics y Home kitchen), esto trató de medirse con la correlación del gráfico anterior, que se distingue y se concluyó que es negativa (inversa) y bastante baja. Se demuestra que esto depende de una variable externa y no la planteada.\
 
 
 
@@ -362,7 +374,7 @@ Categorias%>%
   )
 ```
 
-No, el catálogo no esta esta equilibrado, notablemente por el gráfico se concluye que su categoría mas predominante es "Electronics".\
+Por medio del gráfico, se demuestra que el catálogo no esta equilibrado y es notablemente inferior la cantidad de productos que existen en algunas categorías, se detalla que algunas solo existe un artículo y otras rebasan los 500, se concluye que la categoría más predominante es "Electronics"; las otras categorías que también tienen mayor cantidad de productos son la Home-Kitchen y Computer-accessries.
 
 \section{¿Dentro de las categorías, conviven productos de distintos rangos de precios o existe una homogeneidad entre ellos?}
 
@@ -391,23 +403,22 @@ Diferencias_precios %>%
 
 ```
 
-Sí, existen categorías donde la diferencia de precios es alta, se ve heterogeneidad\
+Por medio de la tabla propuesta, sí se plantea la diferencia entre los rangos de precios que existen en una misma categoría, esta diferencia de precios bastante alta tomando en cuenta que, coexisten en la misma categoría, la heterogeneidad es inminente.\
 
 \chapter{Conclusiones y Recomendaciones}
 
-\textbf{1.-} Conclusion 1 del trabajo de investigación.\
+\textbf{1.-} Tras el análisis estadístico  realizado se presentan las siguientes conclusiones derivadas de las interrogantes de la investigación:
+Se confirmó que hay una alta heterogeneidad y una distribución desequilibrada del inventario. Esto significa que el catálogo está dominado por unas pocas categorías, como: “Electronic”, “home&kitchen”, “Computer&accesories”;que concentran la mayor cantidad de productos, indicando que el mercado de Amazon India tiene categorías que saturan al catálogo frente a otros con poca representación.
+ El análisis de dispersión reveló una gran variedad de rangos de precios dentro de una misma categoría. La presencia de valores atípicos confirma que en un mismo sector conviven tanto productos costosos, como productos económicos, descartando la existencia de homogeneidad en el catálogo.
+Una de las conclusiones  fue la falta de correlación entre el precio original y el porcentaje de descuento.  Lo que indica que los descuentos aplicados no tienen relación, con los precios originales, ya que no siguen un patrón predecible en el catálogo.
+
+Basado en el análisis obtenido, se sugieren las siguientes estrategias:\
 
 \textbf{Recomendación} 
-Recomendación 1 del trabajo de investigación.\
+Dirigido a los compradores, dada la falta de correlación en los descuentos, se recomienda no basar la estrategia únicamente de compras en el porcentaje de rebaja, sino en la diferenciación del producto, ya que el catálogo está saturado, tiene diferentes precios y descuentos en las categorías principales.\
 
-\textbf{2.-} Conclusion 2 del trabajo de investigación.\
-
-\textbf{Recomendación} 
-Recomendación 2 del trabajo de investigación.\
-
-\textbf{n.-} Conclusion n del trabajo de investigación.\
-
-\textbf{Recomendación} Recomendación n del trabajo de investigación.\
+\textbf{2.-}Los nuevos competidores analicen la varianza de precios de su categoría específica antes de ingresar al mercado, para identificar si su estructura de costos les permite sobrevivir en un entorno de alta volatilidad y márgenes reducidos por las comisiones.
+.\
 
 \appendix
 \renewcommand{\thechapter}{\Alph{chapter}}
@@ -429,3 +440,7 @@ Blog empresas: https://blogempresas.yoigo.com/usuario-consumidor-cliente-comprad
 Arimetrics: https://www.arimetrics.com/glosario-digital/amazon \
 
 Cyberclick: https://www.cyberclick.es/numerical-blog/ventajas-y-desventajas-de-vender-en-amazon-marketplace \
+
+Globalshopaholics: https://globalshopaholics.com/es/blog/pros-y-contras-de-comprar-en-amazon/ \
+
+Epinium: https://epinium.com/es/blog/estrategiapreciosventa-amazon/#:~:text=lanzar%20el%20producto.-,%C2%BFCu%C3%A1l%20es%20la%20estrategia%20de%20precios%20de%20venta%20en%20Amazon,ganar%20la%20%E2%80%9CBuy%20Box%E2%80%9D. \
