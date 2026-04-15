@@ -128,10 +128,16 @@ if filtro2:
     f_cprecio = df["categoria_de_precio"].isin(filtro2)
 else:
     f_cprecio = True
-f_porcentaje =(df["porcentaje_descuento"]>= descuento_min) & (df["porcentaje_descuento"]<= descuento_max)
-f_precio = (df["precio_original"]>= precio_min) & (df["precio_original"]<= precio_max)
+f_porcentaje =(df["porcentaje_descuento"].between(filtro3[0], filtro3[1]))
+f_precio = (df["precio_original"].between(filtro4[0], filtro4[1]))
 
 df_filtrado = df[f_categoria & f_cprecio & f_porcentaje & f_precio]
+
+df_cat = df[f_categoria]
+
+if len(df_filtrado) == 0: 
+    st.warning("⚠️ No hay productos con esos filtros. Intenta con otros rangos.")
+    st.stop()
 
 # se añaden columnas interactivas con informacion relevante
 st.header("Resumen del catalogo de Amazon")
@@ -155,11 +161,11 @@ with tab1:
         with st.container(border = True):
             st.markdown("### 🔝Top 10 productos con precios mas altos")
     with col2:
-        st.dataframe(df_filtrado.nlargest(10, "precio_original")[["nombre_producto","precio_original","precio_descuento","porcentaje_descuento","categoria"]])
+        st.dataframe(df_cat.nlargest(10, "precio_original")[["nombre_producto","precio_original","precio_descuento","porcentaje_descuento","categoria"]])
     st.divider()
     col1, col2 = st.columns([0.8, 0.2])
     with col1:
-        st.dataframe(df_filtrado.nlargest(10, "porcentaje_descuento")[["nombre_producto","porcentaje_descuento","precio_original","precio_descuento","categoria"]])
+        st.dataframe(df_cat.nlargest(10, "porcentaje_descuento")[["nombre_producto","porcentaje_descuento","precio_original","precio_descuento","categoria"]])
     with col2:
         with st.container(border = True):
             st.subheader("🔝Top 10 productos con mayor descuento")
